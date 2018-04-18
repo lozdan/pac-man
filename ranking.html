@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Ranking | PacMan</title>
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Ranking Pac-man</h1>
+
+    <div class="ranking-holder">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // $.get('https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5', function(response) {
+            //     console.log(response);
+            // });
+
+            $.ajax({
+                url: 'https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5',
+                type: 'GET',
+                crossDomain: true,
+                success: function (response) {
+                    if (response.data) {
+                        var $ul = $('ul');
+                        response.data.forEach(function (row) {
+                            $ul.append(`<li>${row.name}</li>`)
+                        });
+                        $('.ranking-holder').html('');
+                        $('.ranking-holder').append($ul);
+                    }
+                },
+                error: function (xhr, status) {
+                    $('.ranking-holder').html('Unable to access the server now!');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

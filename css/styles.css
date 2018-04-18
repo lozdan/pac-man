@@ -1,0 +1,68 @@
+/* styles */
+body {
+    text-align: center;
+    font-family: 'Bangers', cursive;
+    color: #FF8800;
+    font-size: 32px;
+    background-color: black;
+}
+
+.canvas-container {
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    height: auto;
+}
+
+#pacman-canvas-foreground,
+#pacman-canvas-background {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+#pacman-canvas-background {
+    background-color: black;
+}
+
+.status {
+    margin: 0 auto;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+}
+
+#lives {
+    display: flex;
+    align-items: center;
+}
+
+#lives img {
+    height: 25px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.loader {
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    border-top: 10px solid #FF8800;
+    border-left: 10px solid #DDDDDD;
+    border-bottom: 10px solid#FF8800;
+    border-right: 10px solid #DDDDDD;
+    border-radius: 50%;
+    animation: spinner 4s infinite linear;
+  }
+  
+  @keyframes spinner {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
