@@ -162,7 +162,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             var y2 = Math.min(character1.y + character1.height, character2.y + character2.height);
             var dx = Math.max(0, x2 - x1);
             var dy = Math.max(0, y2 - y1);
-            return dx * dy > 0.5 * (character1.width * character1.height);
+            return dx * dy > 0.2 * (character1.width * character1.height);
         };
 
         this.moveAll = function () {
@@ -180,13 +180,6 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     } else if (ghost.status === 'afraid') {
                         ghost.setStatus('dead');
                         self.score += self.scoreByEatingGhost;
-                        /*
-                        self.context.font = "16px Bangers";
-                        self.context.fillStyle = "white";
-                        self.context.textAlign = "center";
-                        self.context.fillText(self.scoreByEatingGhost,
-                            ghost.x, ghost.y);
-                        */
                         self.scoreByEatingGhost *= 2;
                         pacmanEatghostAudio.play();
                     }
@@ -214,7 +207,6 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 }
             }
 
-            //undefine.x = 1;
 
             $('#score').html(this.score);
         };
@@ -281,9 +273,17 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             });
             this.pacman.draw(ctx, self);
 
-            if (dots === 0) {
-                var person = prompt("You Win, enter your name", "");
-                document.location.reload();
+            if (dots === 0 && this.status === 'running') {
+                this.status = 'player-won';
+                var name = prompt(`You win, enter your name - Score = ${self.score}`);
+                if (name) {
+                    $.post('https://isureit.com/api/bd/', {
+                        token: 'e472b4b5-f572-4ceb-87c2-8bd313e69ac5',
+                        value: JSON.stringify({ name: name, score: self.score, won: true })
+                    }, function () {
+                        window.location.reload();
+                    });
+                }
             }
 
             if (this.status === 'over') {
@@ -320,7 +320,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                         self.status = 'running';
                     }, 2000);
                 } else {
-                    var name = prompt(`Enter your name - Score = ${self.score}`);
+                    var name = prompt(`Game Over, enter your name - Score = ${self.score}`);
                     if (name) {
                         $.post('https://isureit.com/api/bd/', {
                             token: 'e472b4b5-f572-4ceb-87c2-8bd313e69ac5',

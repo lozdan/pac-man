@@ -10,7 +10,7 @@ requirejs(['./maps', './game'], function (maps, game) {
     var pacmanMap = maps.OriginalMap;
     var R = pacmanMap.length, C = pacmanMap[0].length;
     // limit canvas dimensions to [1000 x 1000]
-    const dimensionH = Math.floor(700 / R);
+    const dimensionH = Math.floor(600 / R);
     const dimensionW = Math.floor(1000 / C);
     // `dimension` must to be multiple of 6 because ghosts moves with speed
     // equal to 2 and PacMan with speed equal to 3.

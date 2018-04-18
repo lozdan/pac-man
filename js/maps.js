@@ -64,7 +64,7 @@ var OriginalMap = [
     '#.##########.##.##########.#',
     '#..........................#',
     '############################'
-]
+];
 
 var IronHackMap = [
     '#########################################',
@@ -95,9 +95,23 @@ var IronHackMap = [
 ];
 
 
+var EasyMap = [
+    '############',
+    '#0         #',
+    '#          #',
+    '#   *  *   #',
+    '#  **  **  #',
+    '#  ******  #',
+    '#  ******  #',
+    '#   ****   #',
+    '#    p     #',
+    '############'
+];
+
 define('maps', function() {
     return {
         OriginalMap: OriginalMap,
-        IronHackMap: IronHackMap
+        IronHackMap: IronHackMap,
+        EasyMap: EasyMap
     };
 });

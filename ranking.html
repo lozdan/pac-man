@@ -9,39 +9,37 @@
         crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+
+    <link rel="shortcut icon" href="assets/icon.png">
 </head>
 
 <body>
-    <h1>Ranking Pac-man</h1>
+    <div class="center-contaner-50">
+        <h1>Ranking Pac-man</h1>
 
-    <div class="ranking-holder">
-        <div class="loader"></div>
+        <div class="ranking-holder mb20">
+            <div class="loader"></div>
+        </div>
+
+        <a href="./index.html">Go back and play!</a>
     </div>
 
     <script>
         $(document).ready(function () {
-            // $.get('https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5', function(response) {
-            //     console.log(response);
-            // });
-
-            $.ajax({
-                url: 'https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5',
-                type: 'GET',
-                crossDomain: true,
-                success: function (response) {
-                    if (response.data) {
-                        var $ul = $('ul');
-                        response.data.forEach(function (row) {
-                            $ul.append(`<li>${row.name}</li>`)
-                        });
-                        $('.ranking-holder').html('');
-                        $('.ranking-holder').append($ul);
-                    }
-                },
-                error: function (xhr, status) {
+            $.getJSON('https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5')
+                .done(function (response) {
+                    response.data.sort(function (a, b) {
+                        return b.score - a.score;
+                    });
+                    var $ul = $('<ul></ul>');
+                    response.data.slice(0, 10).forEach(function (row) {
+                        $ul.append(`<li>${row.name} ... ${row.score} points</li>`)
+                    });
+                    $('.ranking-holder').html('');
+                    $('.ranking-holder').append($ul);
+                }).fail(function () {
                     $('.ranking-holder').html('Unable to access the server now!');
-                }
-            });
+                });
         });
     </script>
 </body>

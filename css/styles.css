@@ -1,4 +1,5 @@
 /* styles */
+
 body {
     text-align: center;
     font-family: 'Bangers', cursive;
@@ -14,8 +15,7 @@ body {
     height: auto;
 }
 
-#pacman-canvas-foreground,
-#pacman-canvas-background {
+#pacman-canvas-foreground, #pacman-canvas-background {
     position: absolute;
     left: 50%;
     transform: translateX(-50%)
@@ -58,11 +58,26 @@ a {
     border-right: 10px solid #DDDDDD;
     border-radius: 50%;
     animation: spinner 4s infinite linear;
-  }
-  
-  @keyframes spinner {
+}
+
+@keyframes spinner {
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  
+}
+
+.center-contaner-50 {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
+}
