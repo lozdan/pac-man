@@ -1,3 +1,10 @@
+function urlQueryParameter(name) {
+    // https://stackoverflow.com/a/47566165/4586108
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+        .exec(window.location.href);
+    return results[1] || 0;
+}
+
 requirejs.config({
     baseUrl: 'js'
 });
@@ -7,7 +14,7 @@ requirejs(['./maps', './game'], function (maps, game) {
     var foreground = document.getElementById('pacman-canvas-foreground');
     var background = document.getElementById('pacman-canvas-background');
     // define the map we are going to use in the game.
-    var pacmanMap = maps.OriginalMap;
+    var pacmanMap = maps[urlQueryParameter('map')] || maps.OriginalMap;
     var R = pacmanMap.length, C = pacmanMap[0].length;
     // limit canvas dimensions to [1000 x 1000]
     const dimensionH = Math.floor(600 / R);
