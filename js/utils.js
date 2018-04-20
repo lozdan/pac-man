@@ -30,13 +30,13 @@ function BFS(r, c, board, blockedCells) {
     distances[r][c] = 0;
     var queue = [[r, c]];
     while (queue.length > 0) {
-        var [x, y] = queue.shift();
+        var [r, c] = queue.shift();
         for (var i = 0; i < DIRECTIONS.length; i++) {
-            var xx = x + DIRECTIONS[i][0];
-            var yy = y + DIRECTIONS[i][1];
-            if (0 <= xx && xx < R && 0 <= yy && yy < C && !blockedCells.includes(board[xx][yy]) && distances[xx][yy] === -1) {
-                distances[xx][yy] = distances[x][y] + 1;
-                queue.push([xx, yy]);
+            var nextR = (r + DIRECTIONS[i][0] + R) % R;
+            var nextC = (c + DIRECTIONS[i][1] + C) % C;
+            if (!blockedCells.includes(board[nextR][nextC]) && distances[nextR][nextC] === -1) {
+                distances[nextR][nextC] = distances[r][c] + 1;
+                queue.push([nextR, nextC]);
             }
         }
     }

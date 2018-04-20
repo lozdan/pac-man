@@ -29,17 +29,11 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
         this.context = foregroundCanvas.getContext('2d');
 
         this.getRow = function (character) {
-            if (character.name === 'pacman') {
-                var result = Math.round(character.y / this.cellH);
-            }
-            return Math.round(character.y / this.cellH);
+            return (Math.round(character.y / this.cellH) + self.R) % self.R;
         };
 
         this.getCol = function (character) {
-            if (character.name === 'pacman') {
-                var result = Math.round(character.x / this.cellW);
-            }
-            return Math.round(character.x / this.cellW);
+            return (Math.round(character.x / this.cellW) + self.C) % self.C;
         };
 
         // running | over
@@ -93,9 +87,9 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
 
         this.canMove = function (character, direction) {
             if (character.x % this.cellW === 0 && character.y % this.cellH === 0) {
-                var r = this.getRow(character) + DIRECTIONS[direction][0];
-                var c = this.getCol(character) + DIRECTIONS[direction][1];
-                if (0 <= r && r < this.R && 0 <= c && c < this.C && board[r][c] !== '#')
+                var r = (this.getRow(character) + DIRECTIONS[direction][0] + self.R) % self.R;
+                var c = (this.getCol(character) + DIRECTIONS[direction][1] + self.C) % self.C;
+                if (board[r][c] !== '#')
                     return character.name === 'ghost' || !'#|-'.includes(board[r][c]);
                 return false;
             }
@@ -124,8 +118,8 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     var bestDistance = -1;
                     for (var i = 0; i < DIRECTIONS.length; i++)
                         if (this.canMove(character, i)) {
-                            var r = this.getRow(character) + DIRECTIONS[i][0];
-                            var c = this.getCol(character) + DIRECTIONS[i][1];
+                            var r = (this.getRow(character) + DIRECTIONS[i][0] + self.R) % self.R;
+                            var c = (this.getCol(character) + DIRECTIONS[i][1] + self.C) % self.C;
                             if (bestDistance === -1 || bestDistance > this.pacmanDistances[r][c]) {
                                 bestDistance = this.pacmanDistances[r][c];
                                 altDirections = [i];
@@ -138,8 +132,8 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     var bestDistance = -1;
                     for (var i = 0; i < DIRECTIONS.length; i++)
                         if ((i ^ 1) != character.direction && this.canMove(character, i)) {
-                            var r = this.getRow(character) + DIRECTIONS[i][0];
-                            var c = this.getCol(character) + DIRECTIONS[i][1];
+                            var r = (this.getRow(character) + DIRECTIONS[i][0] + self.R) % self.R;
+                            var c = (this.getCol(character) + DIRECTIONS[i][1] + self.C) % self.C;
                             if (bestDistance === -1 || bestDistance < this.pacmanDistances[r][c]) {
                                 bestDistance = this.pacmanDistances[r][c];
                                 altDirections = [i];
@@ -155,8 +149,8 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     var bestDistance = -1;
                     for (var i = 0; i < DIRECTIONS.length; i++)
                         if (this.canMove(character, i)) {
-                            var r = this.getRow(character) + DIRECTIONS[i][0];
-                            var c = this.getCol(character) + DIRECTIONS[i][1];
+                            var r = (this.getRow(character) + DIRECTIONS[i][0] + self.R) % self.R;
+                            var c = (this.getCol(character) + DIRECTIONS[i][1] + self.C) % self.C;
                             if (bestDistance === -1 || bestDistance > this.ghostBaseDistance[r][c]) {
                                 bestDistance = this.ghostBaseDistance[r][c];
                                 altDirections = [i];
@@ -178,6 +172,15 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     speed = 3;
                 character.x += speed * DIRECTIONS_PIXEL[character.direction][0];
                 character.y += speed * DIRECTIONS_PIXEL[character.direction][1];
+                
+                if (character.x < 0)
+                    character.x = self.canvas.width;
+                if (character.x > self.canvas.width)
+                    character.x = 0;
+                if (character.y < 0)
+                    character.y = self.canvas.height;
+                if (character.y > self.canvas.height)
+                    character.y = 0;
             }
         };
 
