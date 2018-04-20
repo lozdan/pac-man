@@ -4,6 +4,7 @@
     <title>Ranking | PacMan</title>
 
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/pacman.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -15,31 +16,29 @@
 
 <body>
     <div class="center-contaner-50">
-        <h1>Ranking Pac-man</h1>
+        <h1 class="mb20">Ranking Pac-man</h1>
 
-        <div class="ranking-holder mb20">
+        <div style="color: #edb948" class="la-pacman">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div class="ranking-holder mb20 mt20">
             <div class="loader"></div>
         </div>
 
         <a href="index.html">Go back and play!</a>
     </div>
 
+    <script src="js/stats.js"></script>
+
     <script>
         $(document).ready(function () {
-            $.getJSON('https://isureit.com/api/bd/?token=e472b4b5-f572-4ceb-87c2-8bd313e69ac5')
-                .done(function (response) {
-                    response.data.sort(function (a, b) {
-                        return b.score - a.score;
-                    });
-                    var $ul = $('<ul></ul>');
-                    response.data.slice(0, 10).forEach(function (row) {
-                        $ul.append(`<li>${row.name} ... ${row.score} points</li>`)
-                    });
-                    $('.ranking-holder').html('');
-                    $('.ranking-holder').append($ul);
-                }).fail(function () {
-                    $('.ranking-holder').html('Unable to access the server now!');
-                });
+            setGameStats('.ranking-holder', 100);
         });
     </script>
 </body>

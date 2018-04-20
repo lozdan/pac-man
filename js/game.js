@@ -1,4 +1,4 @@
-define('game', ['./images', './sounds', './utils', './characters'], function () {
+define('game', ['./images', './sounds', './utils', './characters', './stats'], function () {
     function Game(lives, board, foregroundCanvas, backgroundCanvas) {
         var self = this;
 
@@ -21,6 +21,12 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
         this.baseC;
 
         this.floatingScoreTexts = [];
+
+        // time control
+        this.previousFrame;
+        this.totalTime = 0;
+        this.sTime = Date.now();
+        this.eTime = Date.now();
 
         // store all related with the canvas
         this.canvas = foregroundCanvas;
@@ -79,7 +85,6 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     self.pacman.nextDirection = RIGHT;
                 else if (event.which == 40)
                     self.pacman.nextDirection = DOWN;
-                console.log(envet.which);
                 event.preventDefault();
             }
         };
@@ -242,6 +247,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 if (self.collide(ghost, self.pacman)) {
                     if (ghost.isDangerous()) {
                         self.status = 'over';
+                        self.eTime = Date.now();
                     } else if (ghost.status === 'afraid') {
                         ghost.setStatus('dead');
                         self.score += self.scoreByEatingGhost;
@@ -295,6 +301,14 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             this.animationTicks += 1;
 
             var ctx = this.context;
+
+            if (self.status === 'running') {
+                if (self.previousFrame) {
+                    self.totalTime += (Date.now() - self.previousFrame);
+                }
+            }
+
+            self.previousFrame = Date.now();
 
             // change ghosts status
             if (this.status === 'running') {
@@ -365,16 +379,9 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             if (dots === 0 && this.status === 'running') {
                 this.status = 'player-won';
                 var name = prompt(`You win, enter your name - Score = ${self.score}`);
-                if (name) {
-                    $.post('https://isureit.com/api/bd/', {
-                        token: 'e472b4b5-f572-4ceb-87c2-8bd313e69ac5',
-                        value: JSON.stringify({ name: name, score: self.score, won: true })
-                    }, function () {
-                        window.location.reload();
-                    });
-                } else {
+                postGameStats(name, self, function () {
                     window.location.reload();
-                }
+                });
             }
 
             if (this.status === 'over') {
@@ -412,16 +419,9 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     }, 2000);
                 } else {
                     var name = prompt(`Game Over, enter your name - Score = ${self.score}`);
-                    if (name) {
-                        $.post('https://isureit.com/api/bd/', {
-                            token: 'e472b4b5-f572-4ceb-87c2-8bd313e69ac5',
-                            value: JSON.stringify({ name: name, score: self.score, won: false })
-                        }, function () {
-                            window.location.reload();
-                        });
-                    } else {
+                    postGameStats(name, self, function () {
                         window.location.reload();
-                    }
+                    });
                 }
             };
         };
