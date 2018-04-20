@@ -9,12 +9,18 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
         this.ghosts = [];
         this.score = 0;
         this.pacmanDistances;
+        this.ghostBaseDistance;
         this.scoreByEatingGhost = 200;
 
         this.R = board.length;
         this.C = board[0].length;
 
         this.animationTicks = 0;
+
+        this.baseR;
+        this.baseC;
+
+        this.floatingScoreTexts = [];
 
         // store all related with the canvas
         this.canvas = foregroundCanvas;
@@ -51,13 +57,23 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             for (var j = 0; j < this.C; j++) {
                 var x = j * this.cellW;
                 var y = i * this.cellH;
-                if (board[i][j] === 'p') {
+                if (this.board[i][j] === 'p') {
                     this.pacman = new Pacman(x, y, this.cellW, this.cellH);
                 }
-
+                if (this.board[i][j] === 'b') {
+                    this.baseR = i;
+                    this.baseC = j;
+                }
                 if ('0123456789'.indexOf(board[i][j]) !== -1)
-                    this.ghosts.push(new Ghost(x, y, this.cellW, this.cellH, board[i][j] % 4));
+                    this.ghosts.push(new Ghost(x, y, this.cellW, this.cellH, this.board[i][j] % 4));
             }
+        
+        this.ghostBaseDistance = BFS(
+            this.baseR,
+            this.baseC,
+            this.board,
+            '#'
+        );
 
         document.onkeydown = function (event) {
             // 37 -> left
@@ -80,7 +96,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 var r = this.getRow(character) + DIRECTIONS[direction][0];
                 var c = this.getCol(character) + DIRECTIONS[direction][1];
                 if (0 <= r && r < this.R && 0 <= c && c < this.C && board[r][c] !== '#')
-                    return true;
+                    return character.name === 'ghost' || !'#|-'.includes(board[r][c]);
                 return false;
             }
             return (character.direction === direction);
@@ -136,7 +152,17 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 }
 
                 if (character.status === 'dead') {
-                    altDirections = [character.direction];
+                    var bestDistance = -1;
+                    for (var i = 0; i < DIRECTIONS.length; i++)
+                        if (this.canMove(character, i)) {
+                            var r = this.getRow(character) + DIRECTIONS[i][0];
+                            var c = this.getCol(character) + DIRECTIONS[i][1];
+                            if (bestDistance === -1 || bestDistance > this.ghostBaseDistance[r][c]) {
+                                bestDistance = this.ghostBaseDistance[r][c];
+                                altDirections = [i];
+                            } else if (bestDistance === this.ghostBaseDistance[r][c])
+                                altDirections.push(i);
+                        }
                 }
 
                 if (altDirections.length > 0)
@@ -169,7 +195,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             this.pacmanDistances = BFS(
                 this.getRow(this.pacman),
                 this.getCol(this.pacman),
-                this.board
+                this.board, '#'
             );
 
             this.ghosts.forEach(function (ghost) {
@@ -180,9 +206,20 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     } else if (ghost.status === 'afraid') {
                         ghost.setStatus('dead');
                         self.score += self.scoreByEatingGhost;
+                        self.floatingScoreTexts.push({
+                            text: self.scoreByEatingGhost,
+                            time: Date.now(),
+                            x: ghost.x + self.cellW,
+                            y: ghost.y + self.cellH
+                        });
                         self.scoreByEatingGhost *= 2;
                         pacmanEatghostAudio.play();
                     }
+                }
+                if (self.getRow(ghost) === self.baseR)
+                if (self.getCol(ghost) === self.baseC) {
+                    if (ghost.status === 'dead')
+                        ghost.setStatus('chase');
                 }
             });
 
@@ -199,8 +236,10 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                         this.score += 50;
                         self.scoreByEatingGhost = 200;
                         this.ghosts.forEach(function (ghost) {
-                            ghost.setStatus('afraid');
-                            ghost.direction ^= 1;
+                            if (ghost.status !== 'dead') {
+                                ghost.setStatus('afraid');
+                                ghost.direction ^= 1;
+                            }
                         });
                     }
                     this.board[r][c] = ' ';
@@ -217,8 +256,6 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             this.animationTicks += 1;
 
             var ctx = this.context;
-
-            //console.log(ctx);
 
             // change ghosts status
             if (this.status === 'running') {
@@ -273,6 +310,19 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
             });
             this.pacman.draw(ctx, self);
 
+            if (this.floatingScoreTexts) {
+                var newFloatingScoreTexts = [];
+                this.floatingScoreTexts.forEach(function(floatingText) {
+                    self.context.font = "16px Bangers";
+                    self.context.fillStyle = "white";
+                    self.context.textAlign = "center";
+                    self.context.fillText(floatingText.text, floatingText.x, floatingText.y);
+                    if (Date.now() - floatingText.time < 2000)
+                        newFloatingScoreTexts.push(floatingText);
+                });
+                this.floatingScoreTexts = newFloatingScoreTexts;
+            }
+
             if (dots === 0 && this.status === 'running') {
                 this.status = 'player-won';
                 var name = prompt(`You win, enter your name - Score = ${self.score}`);
@@ -283,6 +333,8 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     }, function () {
                         window.location.reload();
                     });
+                } else {
+                    window.location.reload();
                 }
             }
 
@@ -328,6 +380,8 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                         }, function () {
                             window.location.reload();
                         });
+                    } else {
+                        window.location.reload();
                     }
                 }
             };
