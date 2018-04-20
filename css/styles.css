@@ -135,6 +135,10 @@ h1 {
             justify-content: center;
 }
 
+.maps-options div {
+    margin: 0 auto;
+}
+
 .maps-options img {
     height: 60%;
     display: block;
