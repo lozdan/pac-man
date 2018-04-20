@@ -18,7 +18,9 @@ body {
 #pacman-canvas-foreground, #pacman-canvas-background {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%)
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%)
 }
 
 #pacman-canvas-background {
@@ -28,15 +30,25 @@ body {
 .status {
     margin: 0 auto;
     padding: 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     width: 30%;
 }
 
 #lives {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 #lives img {
@@ -57,12 +69,21 @@ a {
     border-bottom: 10px solid#FF8800;
     border-right: 10px solid #DDDDDD;
     border-radius: 50%;
-    animation: spinner 4s infinite linear;
+    -webkit-animation: spinner 4s infinite linear;
+            animation: spinner 4s infinite linear;
+}
+
+@-webkit-keyframes spinner {
+    100% {
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+    }
 }
 
 @keyframes spinner {
     100% {
-        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
     }
 }
 
@@ -108,8 +129,12 @@ h1 {
 }
 
 .maps-options {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .maps-options img {
