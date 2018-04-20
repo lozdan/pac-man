@@ -5,6 +5,11 @@ const DIRECTIONS = [
     [0, +1]  // right
 ];
 
+const UP = 0;
+const DOWN = 1;
+const LEFT = 2;
+const RIGHT = 3;
+
 const DIRECTIONS_PIXEL = [
     [0, -1], // up
     [0, +1], // down

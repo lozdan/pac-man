@@ -61,7 +61,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 if ('0123456789'.indexOf(board[i][j]) !== -1)
                     this.ghosts.push(new Ghost(x, y, this.cellW, this.cellH, this.board[i][j] % 4));
             }
-        
+
         this.ghostBaseDistance = BFS(
             this.baseR,
             this.baseC,
@@ -70,20 +70,56 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
         );
 
         document.onkeydown = function (event) {
-            // 37 -> left
-            // 38 -> up
-            // 39 -> right
-            // 40 -> down
-            if (event.which === 37)
-                self.pacman.nextDirection = 2;
-            else if (event.which == 38)
-                self.pacman.nextDirection = 0;
-            else if (event.which == 39)
-                self.pacman.nextDirection = 3;
-            else if (event.which == 40)
-                self.pacman.nextDirection = 1;
+            if (37 <= event.which && event.which <= 40) {
+                if (event.which === 37)
+                    self.pacman.nextDirection = LEFT;
+                else if (event.which == 38)
+                    self.pacman.nextDirection = UP;
+                else if (event.which == 39)
+                    self.pacman.nextDirection = RIGHT;
+                else if (event.which == 40)
+                    self.pacman.nextDirection = DOWN;
+                console.log(envet.which);
+                event.preventDefault();
+            }
         };
 
+        // touch zone
+        let touchStartX = 0, touchEndX = 0;
+        let touchstartY = 0, touchEndY = 0;
+
+        function handleGesture() {
+            var dx = self.touchEndX - self.touchStartX;
+            var dy = self.touchEndY - self.touchStartY;
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0)
+                    self.pacman.nextDirection = LEFT;
+                else
+                    self.pacman.nextDirection = RIGHT;
+            } else {
+                if (dy < 0)
+                    self.pacman.nextDirection = UP;
+                else
+                    self.pacman.nextDirection = DOWN;
+            }
+        }
+
+        self.canvas.addEventListener('touchstart', function (event) {
+            self.touchStartX = event.changedTouches[0].screenX;
+            self.touchStartY = event.changedTouches[0].screenY;
+        }, false);
+
+        self.canvas.addEventListener('touchmove', function (event) {
+            event.preventDefault();
+        }, false);
+
+        self.canvas.addEventListener('touchend', function (event) {
+            self.touchEndX = event.changedTouches[0].screenX;
+            self.touchEndY = event.changedTouches[0].screenY;
+            handleGesture();
+        }, false);
+
+        // touch zone
 
         this.canMove = function (character, direction) {
             if (character.x % this.cellW === 0 && character.y % this.cellH === 0) {
@@ -103,7 +139,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                 if (character.status === 'scatter') {
                     if (this.canMove(character, character.direction))
                         altDirections.push(character.direction);
-                    if (character.direction === 0 || character.direction === 1) {
+                    if (character.direction === UP || character.direction === DOWN) {
                         if (this.canMove(character, 2)) altDirections.push(2);
                         if (this.canMove(character, 3)) altDirections.push(3);
                     } else {
@@ -172,7 +208,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     speed = 3;
                 character.x += speed * DIRECTIONS_PIXEL[character.direction][0];
                 character.y += speed * DIRECTIONS_PIXEL[character.direction][1];
-                
+
                 if (character.x < 0)
                     character.x = self.canvas.width;
                 if (character.x > self.canvas.width)
@@ -220,10 +256,10 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
                     }
                 }
                 if (self.getRow(ghost) === self.baseR)
-                if (self.getCol(ghost) === self.baseC) {
-                    if (ghost.status === 'dead')
-                        ghost.setStatus('chase');
-                }
+                    if (self.getCol(ghost) === self.baseC) {
+                        if (ghost.status === 'dead')
+                            ghost.setStatus('chase');
+                    }
             });
 
             if (this.status === 'running') {
@@ -315,7 +351,7 @@ define('game', ['./images', './sounds', './utils', './characters'], function () 
 
             if (this.floatingScoreTexts) {
                 var newFloatingScoreTexts = [];
-                this.floatingScoreTexts.forEach(function(floatingText) {
+                this.floatingScoreTexts.forEach(function (floatingText) {
                     self.context.font = "16px Bangers";
                     self.context.fillStyle = "white";
                     self.context.textAlign = "center";
