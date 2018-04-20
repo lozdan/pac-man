@@ -11,7 +11,8 @@ function postGameStats(name, game, callback) {
                 lives: game.lives,
                 time: game.totalTime,
                 sTime: game.sTime,
-                eTime: game.eTime
+                eTime: game.eTime,
+                board: game.boardName
             })
         }, function () {
             callback();
@@ -29,11 +30,12 @@ function setGameStats(holder, limit) {
             });
             var $thead = $('<thead></thead>');
             var $tbody = $('<tbody></tbody>');
-            $thead.append(`<tr><th>Rank</th><th>Name</th><th>Score</th><th>Time (s)</th></tr>`);
+            $thead.append(`<tr><th>Rank</th><th>Name</th><th>Score</th><th>Time (s)</th><th>Map</th></tr>`);
             response.data.slice(0, limit || 10).forEach(function (row, index) {
                 var time = Math.floor(row.time / 1000) || '-';
+                var boardName = row.board || '-';
                 $tbody.append(
-                    `<tr><td>${index + 1}</td><td>${row.name}</td><td>${row.score}</td><td>${time}</td></tr>`
+                    `<tr><td>${index + 1}</td><td>${row.name}</td><td>${row.score}</td><td>${time}</td><td>${boardName}</td></tr>`
                 );
             });
             $(holder).html('').append(

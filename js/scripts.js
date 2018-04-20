@@ -14,7 +14,8 @@ requirejs(['./maps', './game'], function (maps, game) {
     var foreground = document.getElementById('pacman-canvas-foreground');
     var background = document.getElementById('pacman-canvas-background');
     // define the map we are going to use in the game.
-    var pacmanMap = maps[urlQueryParameter('map')] || maps.OriginalMap;
+    var pacmanMapName = urlQueryParameter('map') || maps.OriginalMap;
+    var pacmanMap = maps[pacmanMapName];
     var R = pacmanMap.length, C = pacmanMap[0].length;
     // limit canvas dimensions to [1000 x 1000]
     const dimensionH = Math.floor((screen.height - $('.status').height()) / R);
@@ -33,6 +34,6 @@ requirejs(['./maps', './game'], function (maps, game) {
     // display information about the game right bellow the canvas.
     $('.canvas-container').css('height', `${dimension * R}px`);
     // create and start the game.
-    var game = new game.Game(3, pacmanMap, foreground, background);
+    var game = new game.Game(3, pacmanMap, pacmanMapName, foreground, background);
     game.start();
 });

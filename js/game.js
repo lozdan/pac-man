@@ -1,10 +1,11 @@
 define('game', ['./images', './sounds', './utils', './characters', './stats'], function () {
-    function Game(lives, board, foregroundCanvas, backgroundCanvas) {
+    function Game(lives, board, boardName, foregroundCanvas, backgroundCanvas) {
         var self = this;
 
         this.score = 0;
         this.lives = lives;
         this.board = board;
+        this.boardName = boardName;
         this.pacman;
         this.ghosts = [];
         this.score = 0;
