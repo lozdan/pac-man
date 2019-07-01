@@ -1,46 +1,50 @@
 <html>
-
-<head>
+  <head>
     <title>Ranking | PacMan</title>
 
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <link rel="stylesheet" type="text/css" href="css/pacman.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/pacman.css" />
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Bangers"
+      rel="stylesheet"
+    />
 
-    <link rel="shortcut icon" href="assets/icon.png">
-</head>
+    <link rel="shortcut icon" href="assets/icon.png" />
+  </head>
 
-<body>
+  <body>
     <div class="center-contaner-50">
-        <h1 class="mb20">Ranking Pac-man</h1>
+      <h1 class="mb20">Ranking Pac-man</h1>
 
-        <div style="color: #edb948" class="la-pacman">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+      <div style="color: #edb948" class="la-pacman">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
 
-        <div class="ranking-holder mb20 mt20">
-            <div class="loader"></div>
-        </div>
+      <div class="ranking-holder mb20 mt20">
+        <div class="loader"></div>
+      </div>
 
-        <a href="index.html">Go back and play!</a>
+      <a href="index.html">Go back and play!</a>
     </div>
 
     <script src="js/stats.js"></script>
 
     <script>
-        $(document).ready(function () {
-            setGameStats('.ranking-holder', 100);
-        });
+      $(document).ready(function() {
+        setGameStats('.ranking-holder', 1000);
+      });
     </script>
-</body>
-
+  </body>
 </html>
