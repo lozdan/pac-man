@@ -1,146 +1,143 @@
 body {
-    text-align: center;
-    font-family: 'Bangers', cursive;
-    color: #FF8800;
-    font-size: 32px;
-    background-color: black;
+	text-align: center;
+	font-family: 'Bangers', cursive;
+	color: #ff8800;
+	font-size: 32px;
+	background-color: black;
 }
 
 .canvas-container {
-    position: relative;
-    margin: 0 auto;
-    padding: 0;
-    height: auto;
+	position: relative;
+	margin: 0 auto;
+	padding: 0;
+	height: auto;
 }
 
-#pacman-canvas-foreground, #pacman-canvas-background {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-            transform: translateX(-50%)
+#pacman-canvas-foreground,
+#pacman-canvas-background {
+	position: absolute;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
 }
 
 #pacman-canvas-background {
-    background-color: black;
+	background-color: black;
 }
 
 .status {
-    margin: 0 auto;
-    padding: 5px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    width: 30%;
+	margin: 0 auto;
+	padding: 5px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: 30%;
 }
 
 #lives {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
 }
 
 #lives img {
-    height: 25px;
+	height: 25px;
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 
 .loader {
-    margin: 0 auto;
-    width: 100px;
-    height: 100px;
-    border-top: 10px solid #FF8800;
-    border-left: 10px solid #DDDDDD;
-    border-bottom: 10px solid#FF8800;
-    border-right: 10px solid #DDDDDD;
-    border-radius: 50%;
-    -webkit-animation: spinner 4s infinite linear;
-            animation: spinner 4s infinite linear;
+	margin: 0 auto;
+	width: 100px;
+	height: 100px;
+	border-top: 10px solid #ff8800;
+	border-left: 10px solid #dddddd;
+	border-bottom: 10px solid#FF8800;
+	border-right: 10px solid #dddddd;
+	border-radius: 50%;
+	-webkit-animation: spinner 4s infinite linear;
+	animation: spinner 4s infinite linear;
 }
 
 @-webkit-keyframes spinner {
-    100% {
-        -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-    }
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }
 
 @keyframes spinner {
-    100% {
-        -webkit-transform: rotate(360deg);
-                transform: rotate(360deg);
-    }
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
 }
 
 .center-contaner-50 {
-    width: 50%;
-    margin: 0 auto;
+	width: 50%;
+	margin: 0 auto;
 }
 
 .mb20 {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .mt20 {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .ranking-holder table {
-    text-align: center;
-    margin: 0 auto;
-    font-size: 24px;
+	text-align: center;
+	margin: 0 auto;
+	font-size: 24px;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
 .ranking-holder table thead tr th {
-    border-bottom: 1px solid #FF8800;
+	border-bottom: 1px solid #ff8800;
 }
 
-.ranking-holder table tr th, .ranking-holder table tr td {
-    padding: 5px;
+.ranking-holder table tr th,
+.ranking-holder table tr td {
+	padding: 5px;
 }
 
 .la-pacman {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 h1 {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .maps-options {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 .maps-options div {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 .maps-options img {
-    height: 60%;
-    display: block;
-    margin: 10px;
+	width: 90%;
+	height: 500px;
 }
